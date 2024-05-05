@@ -65,6 +65,6 @@ def get_url(url):
 
             html_content = rewrite_links(base_url, resp)
 
-            return Response(html_content, content_type='text/html')
+            return Response(html_content)
         except requests.exceptions.RequestException as e:
             abort(400, description=e)
