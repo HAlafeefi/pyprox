@@ -37,6 +37,7 @@ def rewrite_links(base_url, html_content):
             tag['href'] = get_absolute_url(base_url, tag['href'])
         elif tag.name == 'script' or tag.name == 'img':
             tag['src'] = get_absolute_url(base_url, tag['src'])
+            print(tag['src'])
     return str(soup)
 
 
@@ -45,7 +46,7 @@ def get_url(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
     }
-    print(url)
+    # print(url)
     if url is None:
         # Render a template or return a custom message
         return '<h1>Deployed!</h1><style>body { display: flex; align-items: center; justify-content: center; height: 100vh; }</style>'
