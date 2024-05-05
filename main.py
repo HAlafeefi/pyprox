@@ -28,9 +28,11 @@ def rewrite_links(base_url, html_content):
     print(123454)
     for tag in soup.find_all(['a', 'link', 'script', 'img']):
         if 'href' in tag.attrs:
-            tag['href'] = get_absolute_url(base_url, tag['href'])
-        elif 'src' in tag.attrs:
-            tag['src'] = get_absolute_url(base_url, tag['src'])
+            if base_url not in tag['href']:
+                tag['href'] = get_absolute_url(base_url, tag['href'])
+        if 'src' in tag.attrs:
+            if base_url not in tag['href']:
+                tag['src'] = get_absolute_url(base_url, tag['src'])
             # print(tag['src'])
     return str(soup)
 
