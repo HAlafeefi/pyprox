@@ -1,3 +1,7 @@
-http://116.203.124.176 {
+
+
+
+
+p.alafeefi.com {
     reverse_proxy 127.0.0.1:5000
 }
