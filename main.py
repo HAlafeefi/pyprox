@@ -9,6 +9,9 @@ def add_schema(url):
     return url
 
 # Define a route for the GET request
+@app.route('/')
+def index():
+    return '<h1>Deployed!</h1><style>body { display: flex; align-items: center; justify-content: center; height: 100vh; }</style>'
 @app.route('/url/<path:url>', methods=['GET'])
 def get_url(url):
     headers = {
