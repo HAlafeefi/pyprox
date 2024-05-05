@@ -32,6 +32,7 @@ def get_absolute_url(base_url, relative_url):
 def rewrite_links(base_url, html_content):
     # Rewrite relative links to absolute links
     soup = BeautifulSoup(html_content, 'html.parser')
+    print(123454)
     for tag in soup.find_all(['a', 'link', 'script', 'img'], href=True, src=True):
         print(1)
         if tag.name == 'a' or tag.name == 'link':
@@ -68,7 +69,7 @@ def get_url(url):
 
 
 
-                return 1
+                return Response(html_content, content_type=response.headers['content-type'])
             else:
                 return response.content.decode('utf-8')
 
