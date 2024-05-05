@@ -9,7 +9,7 @@ headers = {
 
 def add_schema(url):
     if not url.startswith('http://') and not url.startswith('https://'):
-        url = 'https://' + url  # Assuming default schema is http
+        url = 'https://' + url
     return url
 
 # Define a route for the GET request
