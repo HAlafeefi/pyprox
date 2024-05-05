@@ -33,6 +33,7 @@ def rewrite_links(base_url, html_content):
     # Rewrite relative links to absolute links
     soup = BeautifulSoup(html_content, 'html.parser')
     for tag in soup.find_all(['a', 'link', 'script', 'img'], href=True, src=True):
+        print(1)
         if tag.name == 'a' or tag.name == 'link':
             tag['href'] = get_absolute_url(base_url, tag['href'])
         elif tag.name == 'script' or tag.name == 'img':
@@ -56,14 +57,22 @@ def get_url(url):
             response.raise_for_status()
 
             # Rewrite links in the HTML content to point to the proxy server
-            base_url = response.url
+
 
             if 'image' in response.headers['content-type']:
                 return Response(response.content, content_type=response.headers['content-type'])
+            elif 'text/html' in response.headers['content-type']:
+                base_url = response.url
+                html_content = rewrite_links(base_url, response.content.decode('utf-8'))
+
+
+
+
+                return Response(html_content, content_type=response.headers['content-type'])
             else:
                 return response.content.decode('utf-8')
 
-            # html_content = rewrite_links(base_url, resp)
+
 
             # return Response(html_content)
         except requests.exceptions.RequestException as e:
