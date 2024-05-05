@@ -38,6 +38,7 @@ def rewrite_links(base_url, html_content):
             tag['href'] = get_absolute_url(base_url, tag['href'])
         if 'src' in tag.attrs:
             tag['src'] = get_absolute_url(base_url, tag['src'])
+            print(tag['src'])
     return str(soup)
 
 
