@@ -35,12 +35,9 @@ def rewrite_links(base_url, html_content):
     print(123454)
     for tag in soup.find_all(['a', 'link', 'script', 'img']):
         if 'href' in tag.attrs:
-
             tag['href'] = get_absolute_url(base_url, tag['href'])
-
         if 'src' in tag.attrs:
             tag['src'] = get_absolute_url(base_url, tag['src'])
-            print(tag)
     return str(soup)
 
 
@@ -63,7 +60,7 @@ def get_url(url):
             elif 'text/html' in response.headers['content-type']:
                 base_url = str(url).split("/")[0]
                 html_content = rewrite_links(base_url, response.content.decode('utf-8'))
-                return Response(html_content, content_type=response.headers['content-type'])
+                return Response(response.content.decode('utf-8'), content_type=response.headers['content-type'])
             else:
                 return response.content.decode('utf-8')
             # return Response(html_content)
