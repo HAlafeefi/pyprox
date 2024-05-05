@@ -10,7 +10,7 @@ def add_schema(url):
 
 
 
-@app.route('/', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def get_url():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
