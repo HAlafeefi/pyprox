@@ -34,12 +34,10 @@ def rewrite_links(base_url, html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     print(123454)
     for tag in soup.find_all(['a', 'link', 'script', 'img']):
-        print(1)
-        if tag.name == 'a' or tag.name == 'link':
+        if 'href' in tag.attrs:
             tag['href'] = get_absolute_url(base_url, tag['href'])
-        elif tag.name == 'script' or tag.name == 'img':
+        if 'src' in tag.attrs:
             tag['src'] = get_absolute_url(base_url, tag['src'])
-            print(tag['src'])
     return str(soup)
 
 
