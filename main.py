@@ -58,13 +58,13 @@ def get_url(url):
             # Rewrite links in the HTML content to point to the proxy server
             base_url = response.url
 
-            try:
-                resp = response.content.decode('utf-8')
-            except UnicodeDecodeError:
-                resp = response.content
+            if 'image' in response.headers['content-type']:
+                return Response(response.content, content_type=response.headers['content-type'])
+            else:
+                return response.content.decode('utf-8')
 
-            html_content = rewrite_links(base_url, resp)
+            # html_content = rewrite_links(base_url, resp)
 
-            return Response(html_content)
+            # return Response(html_content)
         except requests.exceptions.RequestException as e:
             abort(400, description=e)
