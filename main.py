@@ -68,9 +68,9 @@ def get_url(url):
 
 
 
-                return Response(html_content, content_type=response.headers['content-type'])
-            else:
                 return 1
+            else:
+                return response.content.decode('utf-8')
 
 
 
