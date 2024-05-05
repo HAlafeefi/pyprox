@@ -23,7 +23,7 @@ def get_absolute_url(base_url, relative_url):
     elif relative_url.startswith('//'):
         return "https:" + relative_url
     elif relative_url.startswith('/'):
-        return base_url + relative_url
+        return  relative_url[1:]
     else:
         return relative_url
 
@@ -32,7 +32,6 @@ def get_absolute_url(base_url, relative_url):
 def rewrite_links(base_url, html_content):
     # Rewrite relative links to absolute links
     soup = BeautifulSoup(html_content, 'html.parser')
-    print(123454)
     for tag in soup.find_all(['a', 'link', 'script', 'img']):
         if 'href' in tag.attrs:
             tag['href'] = get_absolute_url(base_url, tag['href'])
@@ -60,7 +59,7 @@ def get_url(url):
             elif 'text/html' in response.headers['content-type']:
                 base_url = str(url).split("/")[0]
                 html_content = rewrite_links(base_url, response.content.decode('utf-8'))
-                return Response(response.content.decode('utf-8'), content_type=response.headers['content-type'])
+                return Response(html_content, content_type=response.headers['content-type'])
             else:
                 return response.content.decode('utf-8')
             # return Response(html_content)
