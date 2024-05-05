@@ -10,13 +10,13 @@ def add_schema(url):
 
 
 
-@app.route('/api', methods=['GET'])
+@app.route('/search', methods=['GET'])
 def get_url():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
     }
 
-    url_param = request.args.get('url')
+    url_param = request.args.get('q')
 
     if url_param is None:
         # Render a template or return a custom message
