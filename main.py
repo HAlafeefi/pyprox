@@ -1,15 +1,41 @@
-from flask import Flask, abort, request
+from flask import Flask, abort, request, Response
 import requests
+from bs4 import BeautifulSoup
+import re
 
 app = Flask(__name__)
+
 
 def add_schema(url):
     if not url.startswith('http://') and not url.startswith('https://'):
         url = 'https://' + url
     return url
 
+
 def sanitize_url(url):
     return url.replace('-', '.')
+
+
+def get_absolute_url(base_url, relative_url):
+    # Construct absolute URL from relative URL and base URL
+    if relative_url.startswith('//'):
+        return "https:" + relative_url
+    elif relative_url.startswith('/'):
+        return base_url + relative_url
+    else:
+        return relative_url
+
+
+def rewrite_links(base_url, html_content):
+    # Rewrite relative links to absolute links
+    soup = BeautifulSoup(html_content, 'html.parser')
+    for tag in soup.find_all(['a', 'link', 'script', 'img'], href=True, src=True):
+        if tag.name == 'a' or tag.name == 'link':
+            tag['href'] = get_absolute_url(base_url, tag['href'])
+        elif tag.name == 'script' or tag.name == 'img':
+            tag['src'] = get_absolute_url(base_url, tag['src'])
+    return str(soup)
+
 
 @app.route('/<path:url>', methods=['GET'])
 def get_url(url):
@@ -22,8 +48,13 @@ def get_url(url):
         return '<h1>Deployed!</h1><style>body { display: flex; align-items: center; justify-content: center; height: 100vh; }</style>'
     elif url:
         try:
-            request1 = requests.get(sanitize_url(add_schema(url)), headers=headers)
-            request1.raise_for_status()
-            return request1.content.decode('utf-8')
-        except requests.exceptions.RequestException as s:
-            abort(400, description=s)
+            response = requests.get(sanitize_url(add_schema(url)), headers=headers)
+            response.raise_for_status()
+
+            # Rewrite links in the HTML content to point to the proxy server
+            base_url = response.url
+            html_content = rewrite_links(base_url, response.content.decode('utf-8'))
+
+            return Response(html_content, content_type='text/html')
+        except requests.exceptions.RequestException as e:
+            abort(400, description=e)
