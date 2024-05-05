@@ -40,7 +40,7 @@ def rewrite_links(base_url, html_content):
 
         if 'src' in tag.attrs:
             tag['src'] = get_absolute_url(base_url, tag['src'])
-            print(tag['src'])
+            print(tag)
     return str(soup)
 
 
