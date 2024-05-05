@@ -62,7 +62,7 @@ def get_url(url):
             if 'image' in response.headers['content-type']:
                 return Response(response.content, content_type=response.headers['content-type'])
             elif 'text/html' in response.headers['content-type']:
-                base_url = response.url
+                base_url = str(url).split("/")[0]
                 html_content = rewrite_links(base_url, response.content.decode('utf-8'))
 
 
