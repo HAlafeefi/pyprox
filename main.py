@@ -17,8 +17,15 @@ def sanitize_url(url):
 
 
 def get_absolute_url(base_url, relative_url):
-    print(relative_url)
-    return base_url + relative_url
+    # Construct absolute URL from relative URL and base URL
+    if relative_url.startswith(('http://', 'https://')):
+        return relative_url
+    elif relative_url.startswith('//'):
+        return "https:" + relative_url
+    elif relative_url.startswith('/'):
+        return base_url + relative_url
+    else:
+        return relative_url
 
 
 
@@ -28,8 +35,9 @@ def rewrite_links(base_url, html_content):
     print(123454)
     for tag in soup.find_all(['a', 'link', 'script', 'img']):
         if 'href' in tag.attrs:
-            print(tag['href'])
+
             tag['href'] = get_absolute_url(base_url, tag['href'])
+            print(tag['href'])
         if 'src' in tag.attrs:
             tag['src'] = get_absolute_url(base_url, tag['src'])
             # print(tag['src'])
