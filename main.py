@@ -33,13 +33,9 @@ def rewrite_links(base_url, html_content):
     # Rewrite relative links to absolute links
     soup = BeautifulSoup(html_content, 'html.parser')
     print(123454)
-    for tag in soup.find_all(['a', 'link', 'script', 'img'], href=True, src=True):
-        print(1)
-        if tag.name == 'a' or tag.name == 'link':
-            tag['href'] = get_absolute_url(base_url, tag['href'])
-        elif tag.name == 'script' or tag.name == 'img':
-            tag['src'] = get_absolute_url(base_url, tag['src'])
-            print(tag['src'])
+    for tag in soup.find_all():
+        print("Tag name:", tag.name)
+        print("Attributes:", tag.attrs)
     return str(soup)
 
 
