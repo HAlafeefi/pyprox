@@ -18,12 +18,15 @@ def sanitize_url(url):
 
 def get_absolute_url(base_url, relative_url):
     # Construct absolute URL from relative URL and base URL
-    if relative_url.startswith('//'):
+    if relative_url.startswith(('http://', 'https://')):
+        return relative_url
+    elif relative_url.startswith('//'):
         return "https:" + relative_url
     elif relative_url.startswith('/'):
         return base_url + relative_url
     else:
         return relative_url
+
 
 
 def rewrite_links(base_url, html_content):
